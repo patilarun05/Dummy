@@ -31,7 +31,7 @@ pipeline{
         stage('Building & Tag Docker Image') {
             steps {
                 echo 'Starting Building Docker Image'
-                sh 'docker build -t mmt-ms:dev-mmt-ms-v.1.${BUILD_NUMBER} .'
+                sh 'docker build -t docker_demo:v.1.${BUILD_NUMBER} .'
                 echo 'Completed  Building Docker Image'
             }
         }
