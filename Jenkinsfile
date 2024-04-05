@@ -1,5 +1,8 @@
 pipeline{
-    agent { label 'Slave'}
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
+    }
+    agent any
     tools{
         maven 'maven-3.9.6'
     }
@@ -8,21 +11,46 @@ pipeline{
             steps{
                 echo 'Code compilation is in progress...'
                 sh 'mvn clean compile'
-                echo 'Code compilation completed'
+                echo 'Code compilation completed.'
             }
         }
         stage('Code QA execution'){
             steps{
                 echo 'Junit test case check in progress...'
                 sh 'mvn clean test'
-                echo 'Junit test case check completed'
+                echo 'Junit test case check completed.'
             }
         }
         stage('Code package'){
             steps{
                 echo 'Creating war artifact'
                 sh 'mvn clean package'
-                echo 'Artifact created successfully'
+                echo 'Artifact created successfully.'
+            }
+        }
+        stage('Building & Tag Docker Image') {
+            steps {
+                echo 'Starting Building Docker Image'
+                sh 'docker build -t mmt-ms:dev-mmt-ms-v.1.${BUILD_NUMBER} .'
+                echo 'Completed  Building Docker Image'
+            }
+        }
+        stage('Docker Image Push to Amazon ECR') {
+            steps {
+                script {
+                    withDockerRegistry([credentialsId:'ecr:ap-south-1:ecr-credentials', url:"https://559220132560.dkr.ecr.ap-south-1.amazonaws.com/mmt-ms"]){
+                        sh """
+                        echo "List the docker images present in local"
+                        docker images
+                        echo "Tagging the Docker Image: In Progress"
+                        docker tag mmt-ms:dev-mmt-ms-v.1.${BUILD_NUMBER} 559220132560.dkr.ecr.ap-south-1.amazonaws.com/mmt-ms:dev-mmt-ms-v.1.${BUILD_NUMBER}
+                        echo "Tagging the Docker Image: Completed"
+                        echo "Push Docker Image to ECR : In Progress"
+                        docker push 559220132560.dkr.ecr.ap-south-1.amazonaws.com/mmt-ms:dev-mmt-ms-v.1.${BUILD_NUMBER}
+                        echo "Push Docker Image to ECR : Completed"
+                        sh """
+                    }
+                }
             }
         }
     }
