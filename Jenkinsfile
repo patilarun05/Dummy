@@ -38,7 +38,7 @@ pipeline{
         stage('Docker Image Push to Amazon ECR') {
             steps {
                 script {
-                        withDockerRegistry([credentialsId: 'ecr:ap-south-1:ecr-credentials', url: 'https://944751024976.dkr.ecr.ap-south-1.amazonaws.com/docker_demo']) {
+                        withDockerRegistry ([credentialsId: 'ecr-credentials', url: 'https://ap-south-1.console.aws.amazon.com/ecr/repositories/private/944751024976/docker_demo?region=ap-south-1']) {
                             sh """
                             echo "List the docker images present in local"
                             docker images
