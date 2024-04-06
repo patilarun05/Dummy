@@ -40,8 +40,8 @@ pipeline{
             steps {
                 script {
                         withDockerRegistry ([credentialsId: 'dockerhubCred', variable: 'dockerhubCred']) {
-                            /*sh 'docker login docker.io -u patilarun05 -p ${dockerhubCred}'
-                            echo "List the docker images present in local"
+                            sh 'docker login docker.io -u ${dockerhubCred} -p ${dockerhubCred}'
+                            /*echo "List the docker images present in local"
                             /*docker images*/
                             echo "Tagging the Docker Image: In Progress"
                             sh 'docker tag docker_demo:v.1.${BUILD_NUMBER} patilarun05/docker_demo:v.1.${BUILD_NUMBER}'
