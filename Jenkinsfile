@@ -32,9 +32,30 @@ pipeline{
             steps {
                 echo 'Starting Building Docker Image'
                 sh 'docker build -t docker_demo:v.1.${BUILD_NUMBER} .'
+                sh 'docker build -t patilarun05/docker_demo:v.1.${BUILD_NUMBER} .'
                 echo 'Completed  Building Docker Image'
             }
         }
+        stage('Docker Image Push to DockerHub') {
+            steps {
+                script {
+                        withDockerRegistry ([credentialsId: 'dockerhubCred', variable: 'dockerhubCred']) {
+                            sh 'docker login docker.io -u patilarun05 -p ${dockerhubCred}'
+                            echo "List the docker images present in local"
+                            docker images
+                            echo "Tagging the Docker Image: In Progress"
+                            docker tag docker_demo docker_demo:v.1.${BUILD_NUMBER}
+                            echo "Tagging the Docker Image: Completed"
+                            echo "Push Docker Image to ECR : In Progress"
+                            docker push patilarun05/docker_demo:v.1.${BUILD_NUMBER}
+                            echo "Push Docker Image to DockerHub : Completed"
+							whoami
+                        }
+
+                }
+            }
+        }
+
         stage('Docker Image Push to Amazon ECR') {
             steps {
                 script {
