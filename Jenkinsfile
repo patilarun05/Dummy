@@ -49,7 +49,7 @@ pipeline{
                             echo "Push Docker Image to DockerHub : In Progress"
                             sh 'docker push patilarun05/docker_demo:v.1.${BUILD_NUMBER}'
                             echo "Push Docker Image to DockerHub : Completed"
-							whoami
+							sh 'whoami'
                         }
 
                 }
