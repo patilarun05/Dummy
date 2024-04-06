@@ -44,7 +44,7 @@ pipeline{
                             echo "List the docker images present in local"
                             /*docker images*/
                             echo "Tagging the Docker Image: In Progress"
-                            sh 'docker tag docker_demo docker_demo:v.1.${BUILD_NUMBER}'
+                            sh 'docker tag docker_demo:v.1.${BUILD_NUMBER}'
                             echo "Tagging the Docker Image: Completed"
                             echo "Push Docker Image to DockerHub : In Progress"
                             sh 'docker push patilarun05/docker_demo:v.1.${BUILD_NUMBER}'
