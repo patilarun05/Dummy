@@ -36,7 +36,7 @@ pipeline{
                 echo 'Completed  Building Docker Image'
             }
         }
-        /*stage('Docker Image Push to DockerHub') {
+        stage('Docker Image Push to DockerHub') {
             steps {
                 script {
                         withDockerRegistry ([credentialsId: 'dockerhubCred', variable: 'dockerhubCred']) {
@@ -54,7 +54,7 @@ pipeline{
 
                 }
             }
-        }*/
+        }
 
         stage('Docker Image Push to Amazon ECR') {
             steps {
