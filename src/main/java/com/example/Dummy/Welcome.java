@@ -6,5 +6,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Welcome {
     @GetMapping("/Welcome")
-    public String getData() {return  "Running on Master" ; }
+    public String getData() {return  "Running on Master." ; }
 }
