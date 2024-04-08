@@ -41,10 +41,10 @@ pipeline{
                 script {
                         withCredentials ([usernamePassword(credentialsId: 'nexuscred', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh """
-                            docker login http://13.234.111.14:8085/repository/docker-demo-new -u admin -p ${PASSWORD}
+                            docker login http://13.201.102.63:8085/repository/docker-demo-new -u admin -p ${PASSWORD}
                             echo "Push Docker Image to Nexus : In Progress"
-							docker tag docker_demo:v.1.${BUILD_NUMBER} 13.234.111.14:8085/docker-demo-new:v.1.${BUILD_NUMBER}
-                            docker push 13.234.111.14:8085/docker-demo-new:v.1.${BUILD_NUMBER}
+							docker tag docker_demo:v.1.${BUILD_NUMBER} 13.201.102.63:8085/docker-demo-new:v.1.${BUILD_NUMBER}
+                            docker push 13.201.102.63:8085/docker-demo-new:v.1.${BUILD_NUMBER}
                             echo "Push Docker Image to Nexus : Completed"
                             whoami
                             """
