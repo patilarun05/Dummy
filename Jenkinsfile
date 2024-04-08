@@ -21,6 +21,20 @@ pipeline{
                 echo 'Junit test case check completed.'
             }
         }
+        stage('Code analysis and inspection by SonarQube') {
+            environment {
+                scannerHome = tool 'SonarQube'
+            }
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                    sh 'mvn sonar:sonar'
+                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
         stage('Code package'){
             steps{
                 echo 'Creating war artifact'
